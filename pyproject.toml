@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pyside-listener"
+version = "0.1.0"
+description = "使用PySide6重写Listener(Streaming version)，力求实现基本功能"
+authors = ["chen <17830831606@163.com>"]
+license = "GPLv3"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+pyside6 = "^6.7.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
