@@ -1,4 +1,12 @@
 {
     "sample_video_path":"./sample.mp4",
-    "main_ui_path":"./ui/main.ui"
+    "main_ui_path":"./ui/main.ui",
+    "sample_rtmp_url":"rtmp://localhost:1935/sample-video-test",
+    "hot_words_file":"",
+    "decoder":"./LFS/decoder-epoch-99-avg-1.onnx",
+    "encoder":"./LFS/encoder-epoch-99-avg-1.onnx",
+    "joiner":"./LFS/joiner-epoch-99-avg-1.onnx",
+    "tokens":"./LFS/tokens.txt",
+    "hotwords_file":"",
+    "tokenization_time":20
 }
