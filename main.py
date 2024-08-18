@@ -1,13 +1,12 @@
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QTableWidgetItem
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import QObject, Signal
 
 from threading import Thread, Event
-from time import sleep
-from icecream import ic
 
 from utils import *
+from speech_recognition import SpeechRecognition_And_ParticipateWords
 
 import numpy as np
 import cv2
@@ -26,23 +25,46 @@ uiLoader = QUiLoader()
 
 class Main:
     def __init__(self):
-        self.configs = ConfigLoader()
+        self.configs = Configs()
         self.url = self.configs.sample_rtmp_url
         self.ui = uiLoader.load(self.configs.main_ui_path)
+
         self.ms = MySignals()
         self.ms.frame_update.connect(self.on_frame_update)
         self.stop = Event()
+
         get_frame_thread = Thread(target=self.get_frame)
         play_audio_thread = Thread(target=self.play_audio)
 
+        self.srpw = SpeechRecognition_And_ParticipateWords(
+            self.url, self.on_caption_update, self.on_words_update
+        )
+
+        srpw_thread = Thread(target=self.srpw.start, args=(self.stop,))
+
         get_frame_thread.start()
         play_audio_thread.start()
+        srpw_thread.start()
+
+        self.ui.words_table.setItem(0, 0, QTableWidgetItem("Hello"))
+
+    def insert_words_table(self, word_name: str, word_explain: str):
+        self.ui.words_table.insertRow(0)
+        self.ui.words_table.setItem(0, 0, QTableWidgetItem(word_name))
+        self.ui.words_table.setItem(0, 1, QTableWidgetItem(word_explain))
+
+    def on_words_update(self, words: set):
+        for word in words:
+            self.insert_words_table(word, "暂时还不知道什么意思")
+
+    def on_caption_update(self, caption_text: str):
+        self.ui.caption.setText(caption_text)
 
     def on_frame_update(self, q_img: QImage):
         self.ui.video_frame.setPixmap(QPixmap.fromImage(q_img))
 
-    def _np2qimg(self, np_img: np.array,shape:tuple = (640,480)) -> QImage:
-        np_img = cv2.resize(np_img,dsize=shape)
+    def _np2qimg(self, np_img: np.array, shape: tuple = (640, 480)) -> QImage:
+        np_img = cv2.resize(np_img, dsize=shape)
         q_img = QImage(
             np_img.data,
             np_img.shape[1],
@@ -65,9 +87,7 @@ class Main:
 
     def on_window_close(self):
         self.stop.set()
-    
-    
-    
+
     def play_audio(self):
         """
         播放音频
@@ -99,7 +119,7 @@ class Main:
             ff_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
         )
         # 持续读取ffmpeg输出的数据并播放
-        while (not self.stop.is_set()):
+        while not self.stop.is_set():
             data = ffmpeg_process.stdout.read(1024)
             if not data:
                 break
@@ -113,8 +133,6 @@ class Main:
         # 确保ffmpeg进程也被正确终止
         ffmpeg_process.terminate()
         ffmpeg_process.wait()
-
-        
 
 
 app = QApplication([])

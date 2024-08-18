@@ -2,7 +2,7 @@ import os
 import json
 
 
-class ConfigLoader:
+class Configs:
     def __init__(
         self,
         configs_filename: str = "configs.json",
@@ -25,5 +25,5 @@ class ConfigLoader:
 
 
 if __name__ == "__main__":
-    configs = ConfigLoader()
+    configs = Configs()
     print(configs.sample_video_path)

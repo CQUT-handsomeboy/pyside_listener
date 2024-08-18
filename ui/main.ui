@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>857</width>
-    <height>644</height>
+    <width>1019</width>
+    <height>729</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,13 +42,51 @@
      <string>正在拉流</string>
     </property>
    </widget>
+   <widget class="QLabel" name="caption">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>540</y>
+      <width>981</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>实时字幕</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="words_table">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>40</y>
+      <width>256</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>词条名</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>词条释义</string>
+     </property>
+    </column>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>857</width>
+     <width>1019</width>
      <height>33</height>
     </rect>
    </property>
