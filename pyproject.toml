@@ -13,6 +13,7 @@ pyside6 = "^6.7.2"
 pyaudio = "^0.2.14"
 sherpa-onnx = "^1.10.22"
 jieba = "^0.42.1"
+numpy = "^2.0.1"
 
 
 [build-system]

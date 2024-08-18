@@ -13,8 +13,6 @@ import cv2
 import pyaudio
 import subprocess
 
-from icecream import ic
-
 
 class MySignals(QObject):
     frame_update = Signal(QImage)
