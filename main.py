@@ -12,6 +12,10 @@ import numpy as np
 import cv2
 import pyaudio
 import subprocess
+import logging
+import redis
+
+r = redis.Redis(host="127.0.0.1", port=6379, db=0)
 
 
 class MySignals(QObject):
@@ -19,6 +23,15 @@ class MySignals(QObject):
 
 
 uiLoader = QUiLoader()
+
+
+# 配置日志
+logging.basicConfig(
+    filename="sample.log",
+    encoding="utf-8",
+    level=logging.DEBUG,
+    format="[%(levelname)-8s] | %(message)s",
+)
 
 
 class Main:
@@ -31,18 +44,18 @@ class Main:
         self.ms.frame_update.connect(self.on_frame_update)
         self.stop = Event()
 
-        get_frame_thread = Thread(target=self.get_frame)
-        play_audio_thread = Thread(target=self.play_audio)
+        self.get_frame_thread = Thread(target=self.get_frame)
+        self.play_audio_thread = Thread(target=self.play_audio)
 
         self.srpw = SpeechRecognition_And_ParticipateWords(
             self.url, self.on_caption_update, self.on_words_update
         )
 
-        srpw_thread = Thread(target=self.srpw.start, args=(self.stop,))
+        self.srpw_thread = Thread(target=self.srpw.start, args=(self.stop,))
 
-        get_frame_thread.start()
-        play_audio_thread.start()
-        srpw_thread.start()
+        self.get_frame_thread.start()
+        self.play_audio_thread.start()
+        self.srpw_thread.start()
 
         self.ui.words_table.setItem(0, 0, QTableWidgetItem("Hello"))
 
@@ -53,9 +66,14 @@ class Main:
 
     def on_words_update(self, words: set):
         for word in words:
-            self.insert_words_table(word, "暂时还不知道什么意思")
+            if (explain_bin := r.get(word)) is None:
+                continue
+            explain = explain_bin.decode("utf-8", errors="ignore")
+
+            self.insert_words_table(word, explain)
 
     def on_caption_update(self, caption_text: str):
+        logging.info(caption_text)
         self.ui.caption.setText(caption_text)
 
     def on_frame_update(self, q_img: QImage):

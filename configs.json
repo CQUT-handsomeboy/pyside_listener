@@ -1,12 +1,22 @@
 {
-    "sample_video_path":"./sample.mp4",
-    "main_ui_path":"./ui/main.ui",
-    "sample_rtmp_url":"rtmp://localhost:1935/sample-video-test",
-    "hot_words_file":"",
-    "decoder":"./LFS/decoder-epoch-99-avg-1.onnx",
-    "encoder":"./LFS/encoder-epoch-99-avg-1.onnx",
-    "joiner":"./LFS/joiner-epoch-99-avg-1.onnx",
-    "tokens":"./LFS/tokens.txt",
-    "hotwords_file":"",
-    "tokenization_time":20
+  "sample_video_path": "./sample.mp4",
+  "main_ui_path": "./ui/main.ui",
+  "sample_rtmp_url": "rtmp://localhost:1935/sample-video-test",
+  "hot_words_file": "",
+  "decoder": "./LFS/decoder-epoch-99-avg-1.onnx",
+  "encoder": "./LFS/encoder-epoch-99-avg-1.onnx",
+  "joiner": "./LFS/joiner-epoch-99-avg-1.onnx",
+  "tokens": "./LFS/tokens.txt",
+  "hotwords_file": "",
+  "tokenization_time": 20,
+  "hotwords": [
+    "NLP",
+    "边缘计算",
+    "深度学习",
+    "目标检测算法",
+    "流媒体传输",
+    "实时语音转文字"
+  ],
+  "redis_host": "127.0.0.1",
+  "redis_port": 6379
 }

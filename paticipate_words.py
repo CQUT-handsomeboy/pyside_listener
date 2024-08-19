@@ -1,7 +1,13 @@
 import jieba
+from utils import Configs
+
+hotwords = Configs().hotwords
+
+for hotword in hotwords:
+    jieba.add_word(hotword)
 
 
-def participle_words(text: str, mode="precise") -> set:
+def participle_words(text: str, mode="search_engine") -> set:
     """
     分词函数
     """
@@ -27,4 +33,6 @@ def participle_words(text: str, mode="precise") -> set:
 
 
 if __name__ == "__main__":
-    print(participle_words("你好世界"))
+    ### TEST ###
+    jieba.add_word("王子秦")
+    print(participle_words("你好，我是数学王子秦老师"))
