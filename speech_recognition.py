@@ -10,7 +10,7 @@ import sherpa_onnx
 from utils import Configs
 from paticipate_words import participle_words
 from typing import Callable, Set
-
+from icecream import ic
 
 class SpeechRecognition_And_ParticipateWords:
     """
@@ -53,7 +53,8 @@ class SpeechRecognition_And_ParticipateWords:
             num_threads=1,
             sample_rate=16000,
             feature_dim=80,
-            decoding_method="greedy_search",
+            hotwords_file="./hotwords.txt",
+            decoding_method="modified_beam_search",
             enable_endpoint_detection=True,
             rule1_min_trailing_silence=2.4,
             rule2_min_trailing_silence=1.2,
@@ -88,9 +89,7 @@ class SpeechRecognition_And_ParticipateWords:
 
         last_result = ""
 
-        from sample_const import START_STRING
-
-        print(START_STRING)
+        print("###START###")
 
         seg_id = 1
         temp_string = ""
@@ -116,17 +115,21 @@ class SpeechRecognition_And_ParticipateWords:
             if not result or last_result == result:
                 continue
 
+
             if last_result in result:
                 X = result[len(last_result) :]
             else:
                 X = result
+            
+            
 
             if seg_id % self.configs.tokenization_time == 0:
                 self.handle_string(temp_string)
                 temp_string = ""
-
-            temp_string += X
-            seg_id += 1
+            
+            if (X.__len__()) < 5:
+                temp_string += X
+                seg_id += 1
 
             last_result = result
 
@@ -135,6 +138,7 @@ class SpeechRecognition_And_ParticipateWords:
 
 
 if __name__ == "__main__":
+    from threading import Event,Thread
     configs = Configs()
 
     i = 0
@@ -155,4 +159,4 @@ if __name__ == "__main__":
         callback_test_1,
     )
 
-    srpw.start()
+    srpw.start(event:=Event())

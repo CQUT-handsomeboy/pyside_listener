@@ -29,8 +29,8 @@ uiLoader = QUiLoader()
 logging.basicConfig(
     filename="sample.log",
     encoding="utf-8",
-    level=logging.DEBUG,
-    format="[%(levelname)-8s] | %(message)s",
+    level=logging.INFO,
+    format="%(message)s",
 )
 
 

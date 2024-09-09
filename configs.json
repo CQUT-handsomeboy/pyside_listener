@@ -1,8 +1,8 @@
 {
   "sample_video_path": "./sample.mp4",
   "main_ui_path": "./ui/main.ui",
-  "sample_rtmp_url": "rtmp://localhost:1935/sample-video-test",
-  "hot_words_file": "",
+  "sample_rtmp_url": "rtmp://127.0.0.1:1935/live",
+  "hot_words_file": "./hotwords.txt",
   "decoder": "./LFS/decoder-epoch-99-avg-1.onnx",
   "encoder": "./LFS/encoder-epoch-99-avg-1.onnx",
   "joiner": "./LFS/joiner-epoch-99-avg-1.onnx",
